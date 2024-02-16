@@ -17,6 +17,9 @@ class Play extends Phaser.Scene {
         this.fg = this.add.tileSprite(0, 0, 1500, 800, 'fg').setOrigin(0)
         this.bb = this.add.tileSprite(0, 0, 1500, 800, 'bb').setOrigin(0)
 
+        // define jelly
+        this.jelly = 0
+
         // terry turtilini anims
         this.anims.create({
             key: 'swim',
@@ -49,8 +52,22 @@ class Play extends Phaser.Scene {
 
     addJelly() {
         let speedVary = Phaser.Math.Between(0, 50)
-        let jelly = new Jelly(this, this.jellySpeed - speedVary)
-        this.jellyGroup.add(jelly)
+        this.jelly = new Jelly(this, this.jellySpeed - speedVary)
+        this.jellyGroup.add(this.jelly)
+
+        this.jelly.body.setAllowGravity(false)
+        // jelly anims
+        this.anims.create({
+            key: 'pulse',
+            frameRate: 2,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('jelly', {
+                start:0,
+                end: 1
+                })
+            })
+
+        this.jelly.anims.play('pulse')
     }
 
     update() {
@@ -76,12 +93,17 @@ class Play extends Phaser.Scene {
                 terry.body.setVelocityY(-250) 
             }
 
-            this.physics.world.collide(terry, this.jellyGroup, this.terryCollision, null, this)
+            this.physics.world.collide(terry, this.jellyGroup, this.jellyCollision, null, this)
         }
     }
 
+    jellyCollision(terry, jelly) {
+        //this.jelly.destroyed = true
+        jelly.alpha = 0
+    }
     terryCollision() {
         terry.destroyed = true
+
     }
     
 }
