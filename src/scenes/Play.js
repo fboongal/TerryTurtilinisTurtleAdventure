@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
     create() {
 
         this.jellySpeed = -300
+        this.trashSpeed = -450
 
         // background, foreground, bubbles
         this.bg = this.add.tileSprite(0, 0, 1500, 800, 'bg').setOrigin(0)
@@ -43,8 +44,15 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         })
 
+        this.trashGroup = this.add.group({
+            runChildUpdate: true
+        })
+
         this.time.delayedCall(2500, () => {
             this.addJelly()
+        })
+        this.time.delayedCall(8000, () => {
+            this.addTrash()
         })
 
         cursors = this.input.keyboard.createCursorKeys()
@@ -70,6 +78,20 @@ class Play extends Phaser.Scene {
         this.jelly.anims.play('pulse')
     }
 
+    addTrash() {
+        let speedVary = Phaser.Math.Between(10,100)
+        let random = Phaser.Math.Between(0,2)
+        if(random == 0){
+            this.sprite = 't1'
+        }
+        else {
+            this.sprite = 't2'
+        }
+        this.trash = new Trash(this, this.trashSpeed - speedVary, this.sprite).setScale(2)
+        this.trashGroup.add(this.trash)
+
+        this.trash.body.setAllowGravity(false)
+    }
     update() {
 
         // background, foreground, bubble
@@ -93,6 +115,7 @@ class Play extends Phaser.Scene {
                 terry.body.setVelocityY(-250) 
             }
 
+            this.physics.world.collide(terry, this.trashGroup, this.terryCollision, null, this)
             this.physics.world.collide(terry, this.jellyGroup, this.jellyCollision, null, this)
         }
     }

@@ -1,6 +1,6 @@
 class Jelly extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity) {
-        super (scene, game.config.width + 20, Phaser.Math.Between(50, 800), 'jelly')
+        super (scene, game.config.width + 150, Phaser.Math.Between(75, 750), 'jelly')
 
         this.parentScene = scene
         
