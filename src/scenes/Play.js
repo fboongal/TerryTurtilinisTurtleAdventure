@@ -9,6 +9,14 @@ class Play extends Phaser.Scene {
 
     create() {
 
+        // play bgm
+        this.bgm = this.sound.add('bgm', {
+            mute: false,
+            volume: 1,
+            loop: true
+        })
+        this.bgm.play()
+
         this.jellySpeed = -300
         this.trashSpeed = -450
 
@@ -100,19 +108,14 @@ class Play extends Phaser.Scene {
         this.bbb.tilePositionX += 1.7
         this.bb.tilePositionX += 3
 
-        // anims
-       
         
+        // terry swimming
         if(!terry.destroyed) {
-          /*  if(cursors.up.isDown) {
-                terry.body.velocity.y -= terryVelocity
-            } else if(cursors.down.isDown) {
-                terry.body.velocity.y += terryVelocity
-            } 
-            */
-
-            if(Phaser.Input.Keyboard.JustDown(cursors.up)) {
+            if(Phaser.Input.Keyboard.JustDown(cursors.space)) {
                 terry.body.setVelocityY(-250) 
+                this.sound.play('swim', {
+                    volume: 0.7
+                })
             }
 
             this.physics.world.collide(terry, this.trashGroup, this.terryCollision, null, this)
@@ -122,9 +125,11 @@ class Play extends Phaser.Scene {
 
     jellyCollision(terry, jelly) {
         //this.jelly.destroyed = true
+        this.sound.play('eat')
         jelly.alpha = 0
     }
     terryCollision() {
+        this.sound.play('hit')
         terry.destroyed = true
 
     }
