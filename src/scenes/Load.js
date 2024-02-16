@@ -45,6 +45,14 @@ class Load extends Phaser.Scene {
     }
 
     create() {
+        // check for local storage browser support
+        if(window.localStorage) {
+            console.log('Local storage supported');
+        } else {
+            console.log('Local storage not supported');
+        }
+
+        // transition to title scene
         this.scene.start('titleScene')
     }
 }

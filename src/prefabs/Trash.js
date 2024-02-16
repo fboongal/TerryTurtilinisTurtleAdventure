@@ -1,6 +1,6 @@
 class Trash extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity, sprite) {
-        super (scene, game.config.width + 150, Phaser.Math.Between(75, 750), sprite)
+        super (scene, game.config.width + 150, Phaser.Math.Between(150, 750), sprite)
 
         this.parentScene = scene
         

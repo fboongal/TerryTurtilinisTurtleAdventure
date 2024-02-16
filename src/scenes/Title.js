@@ -19,7 +19,7 @@ class Title extends Phaser.Scene {
         })
         titleScreen.anims.play('sway')
 
-        // title screen config
+        // title scene config
         let titleConfig = {
             fontFamily: 'Courier',
             fontSize: '55px',
@@ -37,6 +37,7 @@ class Title extends Phaser.Scene {
         // check for SPACE input
         if (Phaser.Input.Keyboard.JustDown(cursors.space)) {
             this.scene.start('playScene')
+            this.sound.play('st')
         }
     }
 }

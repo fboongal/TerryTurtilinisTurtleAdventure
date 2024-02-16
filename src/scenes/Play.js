@@ -63,6 +63,25 @@ class Play extends Phaser.Scene {
             this.addTrash()
         })
 
+        // add score board for jellies consumed
+
+        this.jellyCount = 0
+
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '50px',
+            backgroundColor: '#31433a',
+            color: '#c1fff2',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5
+            },
+            fixedWidth: game.config.width
+        }
+        this.score = this.add.text(centerX, 0,'Jellies Eaten: ' + this.jellyCount, scoreConfig).setOrigin(0.5, 0)
+
+
         cursors = this.input.keyboard.createCursorKeys()
     }
 
@@ -100,6 +119,7 @@ class Play extends Phaser.Scene {
 
         this.trash.body.setAllowGravity(false)
     }
+
     update() {
 
         // background, foreground, bubble
@@ -125,8 +145,14 @@ class Play extends Phaser.Scene {
 
     jellyCollision(terry, jelly) {
         //this.jelly.destroyed = true
-        this.sound.play('eat')
+        this.sound.play('eat', {
+            volume: 8
+        })
         jelly.alpha = 0
+        jelly.destroy()
+        this.jellyCount ++ 
+        this.score.text = 'Jellies Eaten: ' + this.jellyCount
+    
     }
     terryCollision() {
         this.sound.play('hit')
