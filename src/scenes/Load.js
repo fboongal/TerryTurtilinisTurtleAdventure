@@ -4,6 +4,16 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
+        // loading bar
+        let loadingBar = this.add.graphics()
+        this.load.on('progress', (value) => {
+            loadingBar.clear()                                 
+            loadingBar.fillStyle(0X0FFFF, 1)                 
+            loadingBar.fillRect(0, centerY - 75, w * value, 60)  
+        })
+        this.load.on('complete', () => {
+            loadingBar.destroy()
+        })
         // load sprites
         this.load.path = './assets/'
         // this.load.image('terry', 'img/terry.png')
@@ -14,6 +24,7 @@ class Load extends Phaser.Scene {
         this.load.image('bbb', 'img/bubbles2.png')
         this.load.image('t1', 'img/bag.png' )
         this.load.image('t2', 'img/rings.png')
+        this.load.image('ribbon', 'img/ribbon.png')
         
         this.load.spritesheet('jelly', 'img/jelly.png', {
             frameWidth: 80,
@@ -45,13 +56,6 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        // check for local storage browser support
-        if(window.localStorage) {
-            console.log('Local storage supported');
-        } else {
-            console.log('Local storage not supported');
-        }
-
         // transition to title scene
         this.scene.start('titleScene')
     }

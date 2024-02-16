@@ -12,7 +12,7 @@ class Jelly extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        if(this.newJelly && this.x < centerX/2) {
+        if(this.newJelly && this.x < (centerX * this.parentScene.jellyMulti) + 100) {
             this.parentScene.addJelly(this.parent, this.velocity)
             this.newJelly = false
         }

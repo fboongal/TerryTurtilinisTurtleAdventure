@@ -40,6 +40,16 @@ class Play extends Phaser.Scene {
             })
         })
 
+        this.anims.create({
+            key: 'hurt',
+            frameRate: 0,
+            repeat: 0,
+            frames: this.anims.generateFrameNumbers('terry', {
+                start:2,
+                end: 2
+            })
+        })
+
         terry = this.physics.add.sprite(150, centerY, 'terry').setOrigin(0.5)
         terry.anims.play('swim')
         terry.body.setCollideWorldBounds(true)
@@ -67,27 +77,52 @@ class Play extends Phaser.Scene {
 
         this.jellyCount = 0
 
+        this.add.image(centerX, 45, 'ribbon')
+
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '50px',
-            backgroundColor: '#31433a',
             color: '#c1fff2',
             align: 'center',
             padding: {
                 top: 5,
                 bottom: 5
             },
-            fixedWidth: game.config.width
+            fixedWidth: 650
         }
-        this.score = this.add.text(centerX, 0,'Jellies Eaten: ' + this.jellyCount, scoreConfig).setOrigin(0.5, 0)
 
+        // score board
+        this.score = this.add.text(centerX, 10,'Jellies Eaten: ' + this.jellyCount, scoreConfig).setOrigin(0.5, 0)
+
+
+        // events
+       this.timer = this.time.addEvent({
+        delay: 10000,
+        callback: this.moreTrash,
+        callbackScope: this,
+        loop: true
+       })
+
+       this.trashMulti = 1
+
+       this.jellyTime = this.time.addEvent({
+        delay: 30000,
+        callback: this.moreJelly,
+        callbackScope: this,
+        loop: true
+       })
+
+       this.jellyMulti = 1
+
+       this.frenzyMulti = 1
+       this.frenzy = false
 
         cursors = this.input.keyboard.createCursorKeys()
     }
 
     addJelly() {
         let speedVary = Phaser.Math.Between(0, 50)
-        this.jelly = new Jelly(this, this.jellySpeed - speedVary)
+        this.jelly = new Jelly(this, this.jellySpeed - speedVary).setScale(this.frenzyMulti)
         this.jellyGroup.add(this.jelly)
 
         this.jelly.body.setAllowGravity(false)
@@ -103,6 +138,10 @@ class Play extends Phaser.Scene {
             })
 
         this.jelly.anims.play('pulse')
+
+        if(this.frenzy){
+            this.frenzyMulti = Phaser.Math.FloatBetween(1, 2)
+        }
     }
 
     addTrash() {
@@ -118,6 +157,7 @@ class Play extends Phaser.Scene {
         this.trashGroup.add(this.trash)
 
         this.trash.body.setAllowGravity(false)
+        this.trash.body.setSize(36, 33)
     }
 
     update() {
@@ -155,9 +195,41 @@ class Play extends Phaser.Scene {
     
     }
     terryCollision() {
-        this.sound.play('hit')
+        this.sound.play('hit', {
+            volume: 10
+        })
+        terry.anims.play('hurt')
         terry.destroyed = true
 
+        this.time.delayedCall(1500, () => {this.scene.start('gameOverScene')})
+
+    }
+
+    moreTrash() {
+        if(this.trashMulti < 2) {
+            this.trashMulti += 0.1
+            console.log('more trash')
+        }
+        //console.log('more trash')
     }
     
-}
+    moreJelly() {
+        this.jellyMulti *= 2
+        this.frenzy = true
+
+        console.log('jelly frenzy!!')
+        this.nojellyTime = this.time.addEvent({
+            delay: Phaser.Math.Between(3000, 8000),
+            callback: this.stopJelly,
+            callbackScope: this,
+            loop: false
+           })
+    }
+
+    stopJelly() {
+        this.jellyMulti = 1
+        this.frenzyMulti = 1
+        this.frenzy = false
+    }
+
+}   
