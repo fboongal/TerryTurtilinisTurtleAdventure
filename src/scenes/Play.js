@@ -193,7 +193,7 @@ class Play extends Phaser.Scene {
     jellyCollision(terry, jelly) {
         //this.jelly.destroyed = true
         this.sound.play('eat', {
-            volume: 8
+            volume: 6.5
         })
         jelly.alpha = 0
         jelly.destroy()

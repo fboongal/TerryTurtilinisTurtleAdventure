@@ -48,6 +48,9 @@ class Load extends Phaser.Scene {
             frameHeight: 800
         })
 
+        // load credits
+        this.load.image('cred', 'img/credits.png')
+
         // load audio
 
         // hit: https://freesound.org/people/jeckkech/sounds/391666/

@@ -22,18 +22,20 @@ class GameOver extends Phaser.Scene {
         // game over config
         let ggConfig = {
             fontFamily: 'Courier',
-            fontSize: '55px',
+            fontSize: '40px',
             color: '#c1fff2',
             align: 'center'
         }
         // add text for directions
-        this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu or [R] to restart.', ggConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu [C] for Credits [R] to Restart.', ggConfig).setOrigin(0.5)
 
         // cursor keys
         cursors = this.input.keyboard.createCursorKeys()
-        // define M and R keys
+
+        // define M R C keys
          this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
          this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+         this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
     }
 
     update() {
@@ -46,6 +48,12 @@ class GameOver extends Phaser.Scene {
         // check for R input for restart
         if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
             this.scene.start('playScene')
+            this.sound.play('st')
+        }
+
+        // check for C input for restart
+        if (Phaser.Input.Keyboard.JustDown(this.keyC)) {
+            this.scene.start('creditsScene')
             this.sound.play('st')
         }
     }

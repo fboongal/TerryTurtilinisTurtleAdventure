@@ -18,7 +18,7 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, Title, Play, GameOver ]
+    scene: [ Load, Title, Play, Credits, GameOver ]
 }
 
 let game = new Phaser.Game(config)
@@ -31,5 +31,3 @@ let h = game.config.height
 const terryVelocity = 200
 let terry = null
 let cursors
-
-let keyM, keyR
