@@ -14,6 +14,7 @@ class Load extends Phaser.Scene {
         this.load.on('complete', () => {
             loadingBar.destroy()
         })
+        
         // load sprites
         this.load.path = './assets/'
         // this.load.image('terry', 'img/terry.png')

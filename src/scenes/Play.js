@@ -145,8 +145,8 @@ class Play extends Phaser.Scene {
     }
 
     addTrash() {
-        let speedVary = Phaser.Math.Between(10,100)
-        let random = Phaser.Math.Between(0,2)
+        let speedVary = Phaser.Math.Between(10, 100)
+        let random = Phaser.Math.Between(0, 2)
         if(random == 0){
             this.sprite = 't1'
         }
