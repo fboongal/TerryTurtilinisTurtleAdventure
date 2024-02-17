@@ -9,13 +9,20 @@ class Play extends Phaser.Scene {
 
     create() {
 
-        // play bgm
+        // play and loop background music
         this.bgm = this.sound.add('bgm', {
-            mute: false,
             volume: 1,
             loop: true
         })
-        this.bgm.play()
+        
+        if(!this.musicPlayed) {
+            this.bgm.play()
+            this.musicPlayed = true
+        }
+
+        if (this.musicPlayed && this.scene.isActive('playScene')) {
+            this.musicPlayed = false
+        }
 
         this.jellySpeed = -300
         this.trashSpeed = -450
@@ -66,7 +73,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         })
 
-        this.time.delayedCall(2500, () => {
+        this.time.delayedCall(1500, () => {
             this.addJelly()
         })
         this.time.delayedCall(8000, () => {

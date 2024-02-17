@@ -4,13 +4,49 @@ class GameOver extends Phaser.Scene {
     }
 
     create() {
-        // add GAME OVER text
-        /*
-        this.add.bitmapText(centerX, centerY, 'gem', `Disintegration averted for ${level}s`, 48).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY + textSpacer, 'gem', `This browser's best: ${highScore}s`, 24).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY + textSpacer*2, 'gem', `Press UP ARROW to Restart`, 36).setOrigin(0.5);
-        */
-        // set up cursor keys
-        cursors = this.input.keyboard.createCursorKeys();
+        // add game over screen
+
+        let gameOverScreen = this.add.sprite(0, 0, 'gameover').setOrigin(0, 0)
+
+        gameOverScreen.anims.create({
+            key: 'gg',
+            frameRate: 2,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('gameover', {
+                start:0,
+                end: 1
+            })
+        })
+        gameOverScreen.anims.play('gg')
+
+        // game over config
+        let ggConfig = {
+            fontFamily: 'Courier',
+            fontSize: '55px',
+            color: '#c1fff2',
+            align: 'center'
+        }
+        // add text for directions
+        this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu or [R] to restart.', ggConfig).setOrigin(0.5)
+
+        // cursor keys
+        cursors = this.input.keyboard.createCursorKeys()
+        // define M and R keys
+         this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
+         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+    }
+
+    update() {
+        // check for M input for menu
+        if (Phaser.Input.Keyboard.JustDown(this.keyM)) {
+            this.scene.start('titleScene')
+            this.sound.play('st')
+        }
+
+        // check for R input for restart
+        if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
+            this.scene.start('playScene')
+            this.sound.play('st')
+        }
     }
 }

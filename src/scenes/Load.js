@@ -14,7 +14,7 @@ class Load extends Phaser.Scene {
         this.load.on('complete', () => {
             loadingBar.destroy()
         })
-        
+
         // load sprites
         this.load.path = './assets/'
         // this.load.image('terry', 'img/terry.png')
@@ -38,6 +38,12 @@ class Load extends Phaser.Scene {
 
         // load title screen
         this.load.spritesheet('title', 'img/title.png', {
+            frameWidth: 1500,
+            frameHeight: 800
+        })
+
+        // load game over screen
+        this.load.spritesheet('gameover', 'img/gameover.png', {
             frameWidth: 1500,
             frameHeight: 800
         })

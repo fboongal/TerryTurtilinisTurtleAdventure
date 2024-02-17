@@ -31,3 +31,5 @@ let h = game.config.height
 const terryVelocity = 200
 let terry = null
 let cursors
+
+let keyM, keyR
