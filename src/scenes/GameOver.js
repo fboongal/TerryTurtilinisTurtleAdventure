@@ -29,9 +29,6 @@ class GameOver extends Phaser.Scene {
         // add text for directions
         this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu [C] for Credits [R] to Restart', ggConfig).setOrigin(0.5)
 
-        // cursor keys
-        cursors = this.input.keyboard.createCursorKeys()
-
         // define M R C keys
          this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
          this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
