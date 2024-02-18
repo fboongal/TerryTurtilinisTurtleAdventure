@@ -24,10 +24,11 @@ class Play extends Phaser.Scene {
             this.musicPlayed = false
         }
 
+        // define speeds, "i am speed" -Lightning McQueen
         this.jellySpeed = -300
-        this.trashSpeed = -450
+        this.trashSpeed = -400
 
-        // background, foreground, bubbles
+        // add background, foreground, bubbles
         this.bg = this.add.tileSprite(0, 0, 1500, 800, 'bg').setOrigin(0)
         this.bbb = this.add.tileSprite(0, 0, 1500, 800, 'bbb').setOrigin(0)
         this.fg = this.add.tileSprite(0, 0, 1500, 800, 'fg').setOrigin(0)
@@ -46,7 +47,6 @@ class Play extends Phaser.Scene {
                 end: 1
             })
         })
-
         this.anims.create({
             key: 'hurt',
             frameRate: 0,
@@ -57,7 +57,10 @@ class Play extends Phaser.Scene {
             })
         })
 
+        // terry turtillini!!
         terry = this.physics.add.sprite(150, centerY, 'terry').setOrigin(0.5)
+        terry.setSize(158, 65)
+        terry.setOffset(10, 0)
         terry.anims.play('swim')
         terry.body.setCollideWorldBounds(true)
         terry.setImmovable()
@@ -65,23 +68,25 @@ class Play extends Phaser.Scene {
         terry.setDragY(10)
         terry.destroyed = false
         
+        // add jelly group
         this.jellyGroup = this.add.group({
             runChildUpdate: true
         })
-
+        // add trash group
         this.trashGroup = this.add.group({
             runChildUpdate: true
         })
 
+        // spawn jellies after 1.5 secs when play begins
         this.time.delayedCall(1500, () => {
             this.addJelly()
         })
+        // spawn trash after 8 secs when play begins
         this.time.delayedCall(8000, () => {
             this.addTrash()
         })
 
         // add score board for jellies consumed
-
         this.jellyCount = 0
 
         this.add.image(centerX, 45, 'ribbon')
@@ -97,42 +102,42 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 650
         }
-
-        // score board
+        // score board text
         this.score = this.add.text(centerX, 10,'Jellies Eaten: ' + this.jellyCount, scoreConfig).setOrigin(0.5, 0)
 
-
-        // events
+        // more trash every 15 secs
        this.timer = this.time.addEvent({
-        delay: 10000,
+        delay: 15000,
         callback: this.moreTrash,
         callbackScope: this,
         loop: true
        })
-
+       // define trash multiplier
        this.trashMulti = 1
 
-       this.jellyTime = this.time.addEvent({
+       // jelly frenzy!! every 30 secs
+       this.jellyFrenzy = this.time.addEvent({
         delay: 30000,
         callback: this.moreJelly,
         callbackScope: this,
         loop: true
        })
-
+       // define jelly mutiplier
        this.jellyMulti = 1
-
+       // define frenzy multiplier
        this.frenzyMulti = 1
        this.frenzy = false
 
         cursors = this.input.keyboard.createCursorKeys()
     }
-
+    // spawn jellies
     addJelly() {
         let speedVary = Phaser.Math.Between(0, 50)
         this.jelly = new Jelly(this, this.jellySpeed - speedVary).setScale(this.frenzyMulti)
         this.jellyGroup.add(this.jelly)
 
         this.jelly.body.setAllowGravity(false)
+
         // jelly anims
         this.anims.create({
             key: 'pulse',
@@ -146,13 +151,14 @@ class Play extends Phaser.Scene {
 
         this.jelly.anims.play('pulse')
 
+        // define jelly frenzy
         if(this.frenzy){
             this.frenzyMulti = Phaser.Math.FloatBetween(1, 2)
         }
     }
-
+    // spawn trash
     addTrash() {
-        let speedVary = Phaser.Math.Between(10, 100)
+        let speedVary = Phaser.Math.Between(50, 100)
         let random = Phaser.Math.Between(0, 2)
         if(random == 0){
             this.sprite = 't1'
@@ -169,31 +175,30 @@ class Play extends Phaser.Scene {
 
     update() {
 
-        // background, foreground, bubble
+        // background, foreground, bubble scrolling
         this.bg.tilePositionX += .5
         this.fg.tilePositionX += 1
-        this.bbb.tilePositionX += 1.7
+        this.bbb.tilePositionX += 1.3
         this.bb.tilePositionX += 3
-
         
-        // terry swimming
+        // terry swimming physics
         if(!terry.destroyed) {
             if(Phaser.Input.Keyboard.JustDown(cursors.space)) {
-                terry.body.setVelocityY(-250) 
+                terry.body.setVelocityY(-230) 
                 this.sound.play('swim', {
                     volume: 0.7
                 })
             }
 
-            this.physics.world.collide(terry, this.trashGroup, this.terryCollision, null, this)
+            this.physics.world.collide(terry, this.trashGroup, this.trashCollision, null, this)
             this.physics.world.collide(terry, this.jellyGroup, this.jellyCollision, null, this)
         }
     }
 
+    // terry eats jelly
     jellyCollision(terry, jelly) {
-        //this.jelly.destroyed = true
         this.sound.play('eat', {
-            volume: 6.5
+            volume: 2
         })
         jelly.alpha = 0
         jelly.destroy()
@@ -201,7 +206,8 @@ class Play extends Phaser.Scene {
         this.score.text = 'Jellies Eaten: ' + this.jellyCount
     
     }
-    terryCollision() {
+    // terry caught in trash
+    trashCollision() {
         this.sound.play('hit', {
             volume: 10
         })
@@ -211,28 +217,27 @@ class Play extends Phaser.Scene {
         this.time.delayedCall(1500, () => {this.scene.start('gameOverScene')})
 
     }
-
+    // more trash for higher difficulty, capped at x2 trash
     moreTrash() {
         if(this.trashMulti < 2) {
             this.trashMulti += 0.1
             console.log('more trash')
         }
-        //console.log('more trash')
     }
-    
+    // more jellies for jelly frenzy
     moreJelly() {
         this.jellyMulti *= 2
         this.frenzy = true
 
         console.log('jelly frenzy!!')
-        this.nojellyTime = this.time.addEvent({
+        this.jellyFrenzy = this.time.addEvent({
             delay: Phaser.Math.Between(3000, 8000),
             callback: this.stopJelly,
             callbackScope: this,
             loop: false
            })
     }
-
+    // stop jelly frenzy
     stopJelly() {
         this.jellyMulti = 1
         this.frenzyMulti = 1

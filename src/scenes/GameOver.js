@@ -5,7 +5,6 @@ class GameOver extends Phaser.Scene {
 
     create() {
         // add game over screen
-
         let gameOverScreen = this.add.sprite(0, 0, 'gameover').setOrigin(0, 0)
 
         gameOverScreen.anims.create({

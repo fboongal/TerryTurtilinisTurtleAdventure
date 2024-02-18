@@ -17,7 +17,6 @@ class Credits extends Phaser.Scene {
         // add text for directions
         this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu', credConfig).setOrigin(0.5)
 
-
         // define M key
         this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
     }
