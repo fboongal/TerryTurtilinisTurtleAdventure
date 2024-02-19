@@ -88,8 +88,9 @@ class Play extends Phaser.Scene {
 
         // add score board for jellies consumed
         this.jellyCount = 0
-
+        
         this.add.image(centerX, 45, 'ribbon')
+    
 
         let scoreConfig = {
             fontFamily: 'Courier',
@@ -103,11 +104,11 @@ class Play extends Phaser.Scene {
             fixedWidth: 650
         }
         // score board text
-        this.score = this.add.text(centerX, 10,'Jellies Eaten: ' + this.jellyCount, scoreConfig).setOrigin(0.5, 0)
+        this.score = this.add.text(centerX, 10,`Jellies Eaten: ${this.jellyCount}`, scoreConfig).setOrigin(0.5, 0)
 
-        // more trash every 15 secs
+        // more trash every 15.5 secs
        this.timer = this.time.addEvent({
-        delay: 15000,
+        delay: 15500,
         callback: this.moreTrash,
         callbackScope: this,
         loop: true
@@ -203,7 +204,7 @@ class Play extends Phaser.Scene {
         jelly.alpha = 0
         jelly.destroy()
         this.jellyCount ++ 
-        this.score.text = 'Jellies Eaten: ' + this.jellyCount
+        this.score.text = `Jellies Eaten: ${this.jellyCount}`
     
     }
     // terry caught in trash
@@ -214,7 +215,8 @@ class Play extends Phaser.Scene {
         terry.anims.play('hurt')
         terry.destroyed = true
 
-        this.time.delayedCall(1500, () => {this.scene.start('gameOverScene')})
+        this.time.delayedCall(1500, () => {this.scene.start('gameOverScene', this.jellyCount)
+        })
 
     }
     // more trash for higher difficulty, capped at x2 trash

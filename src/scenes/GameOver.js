@@ -3,7 +3,7 @@ class GameOver extends Phaser.Scene {
         super('gameOverScene');
     }
 
-    create() {
+    create(jellyCount) {
         // add game over screen
         let gameOverScreen = this.add.sprite(0, 0, 'gameover').setOrigin(0, 0)
 
@@ -26,12 +26,31 @@ class GameOver extends Phaser.Scene {
             align: 'center'
         }
         // add text for directions
-        this.add.text(game.config.width/2 + 36, 743, 'Press [M] for Menu [C] for Credits [R] to Restart', ggConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2 + 36, 750, 'Press [M] for Menu [C] for Credits [R] to Restart', ggConfig).setOrigin(0.5)
 
         // define M R C keys
          this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
          this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
          this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+
+         // add score board for jellies consumed
+         this.add.image(centerX, 45, 'dribbon')
+
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '50px',
+            color: '#c1fff2',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5
+            },
+            fixedWidth: 650
+        }
+    
+        // score board text
+        this.add.text(centerX, 10, `Jellies Eaten: ${jellyCount}`, scoreConfig).setOrigin(0.5, 0)
+        console.log(jellyCount)
     }
 
     update() {
@@ -54,3 +73,5 @@ class GameOver extends Phaser.Scene {
         }
     }
 }
+
+

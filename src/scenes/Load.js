@@ -25,6 +25,7 @@ class Load extends Phaser.Scene {
         this.load.image('t1', 'img/bag.png' )
         this.load.image('t2', 'img/rings.png')
         this.load.image('ribbon', 'img/ribbon.png')
+        this.load.image('dribbon', 'img/dribbon.png')
         
         this.load.spritesheet('jelly', 'img/jelly.png', {
             frameWidth: 80,

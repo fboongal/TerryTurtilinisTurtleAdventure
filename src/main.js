@@ -10,6 +10,9 @@ let config = {
     type: Phaser.AUTO,
     width: 1500,
     height: 800,
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     render: {
         pixelArt: true
     },
@@ -32,3 +35,5 @@ let h = game.config.height
 const terryVelocity = 200
 let terry = null
 let cursors
+
+
